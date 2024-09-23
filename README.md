@@ -1,7 +1,8 @@
 # analytics_fun
 ## sandbox for playing with various datasets
 
-### joke database, looking to see which jokes score highest when paired together in the same set
+### which jokes score highest when paired together in the same set
+`top_20.py` and `joke_stats.py`
 
 <div style="display: flex; justify-content: space-between;">
   <img src="jokes_heatmap_analysis_fixed.png" alt="more joke database analysis" style="width: 50%;"/>
