@@ -3,38 +3,45 @@ import matplotlib.pyplot as plt
 from collections import Counter
 from rapidfuzz import fuzz, process
 import logging
+import argparse
+
+# Set up command-line argument parsing
+parser = argparse.ArgumentParser(description='Analyze joke sets based on a given jokeid.')
+parser.add_argument('jokeid', type=str, help='The jokeid to analyze (e.g., "AI_killing_poetry").')
+parser.add_argument('--db_password', type=str, required=True, help='The password for the MySQL database.')
+args = parser.parse_args()
 
 # Set up logging to write to a file
 logging.basicConfig(filename='jokes_analysis.log',
                     level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Connect to the MySQL database
+# Connect to the MySQL database using the provided password
 logging.info("Connecting to the database...")
 connection = mysql.connector.connect(
     host='localhost',
     user='root',
-    password='',
+    password=args.db_password,  # Using the password from the command line
     database='jokes'
 )
 
 cursor = connection.cursor()
 
-# Query to get sets that contain "AI_killing_poetry" with a high score
-query = """
+# Query to get sets that contain the given jokeid with a high score
+query = f"""
 SELECT t1.jokeid, t1.date, t1.venue, t1.score
 FROM jokes AS t1
 JOIN (
     SELECT date, venue
     FROM jokes
-    WHERE jokeid = 'AI_killing_poetry' AND score > (SELECT AVG(score) FROM jokes WHERE jokeid = 'AI_killing_poetry')
-) AS AI_killing_poetry_sets
-ON t1.date = AI_killing_poetry_sets.date AND t1.venue = AI_killing_poetry_sets.venue
-WHERE t1.jokeid != 'AI_killing_poetry'
+    WHERE jokeid = '{args.jokeid}' AND score > (SELECT AVG(score) FROM jokes WHERE jokeid = '{args.jokeid}')
+) AS jokeid_sets
+ON t1.date = jokeid_sets.date AND t1.venue = jokeid_sets.venue
+WHERE t1.jokeid != '{args.jokeid}'
 ORDER BY t1.date, t1.venue, t1.score DESC;
 """
 
-logging.info("Executing SQL query to retrieve jokes data...")
+logging.info(f"Executing SQL query to retrieve jokes data for jokeid '{args.jokeid}'...")
 cursor.execute(query)
 
 # Store the results
@@ -103,7 +110,7 @@ plt.figure(figsize=(10, 6))
 plt.barh(top_jokeids, top_counts, color='skyblue')
 plt.xlabel('Frequency')
 plt.ylabel('JokeID Group')
-plt.title('Most Frequent JokeID Groups in High Scoring Sets with "AI_killing_poetry"')
+plt.title(f'Most Frequent JokeID Groups in High Scoring Sets with "{args.jokeid}"')
 plt.gca().invert_yaxis()  # Invert y-axis to show the most frequent at the top
 plt.tight_layout()
 
