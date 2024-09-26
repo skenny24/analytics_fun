@@ -5,7 +5,7 @@
 
 view best joke to precede another
 ```python
-> pyviz_joke_stats.py`
+> pyviz_joke_stats.py
 ```
 ![Watch the video](vista.gif)
 show heatmap of average score for pairings of the top 20 (highest scoring) jokes  
