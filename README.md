@@ -2,7 +2,11 @@
 ## sandbox for playing with various datasets
 
 ### which jokes score highest when paired together in the same set
-`top_20.py` and `joke_stats.py`
+
+<video width="340" height="280" controls autoplay>
+  <source src="vista.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 
 <div style="display: flex; justify-content: space-between;">
   <img src="jokes_heatmap_analysis_fixed.png" alt="more joke database analysis" style="width: 50%;"/>
@@ -14,4 +18,3 @@
 <div style="display: flex; justify-content: space-between;">
   <img src="cyclist_accidents_analysis.png" alt="cycling" style="width: 100%;"/>
 </div>
-

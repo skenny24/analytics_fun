@@ -80,7 +80,7 @@ def plot_top_joke_network(best_preceding_jokes):
 
     # Add edges between top jokes and their preceding jokes
     for _, row in top_jokes.iterrows():
-        print("adding edge btwn :: "+str(row['preceding_jokeid']+"->"+str(row['current_jokeid'])))
+        print("adding edge btwn :: " + str(row['preceding_jokeid'] + " -> " + str(row['current_jokeid'])))
         G.add_edge(row['preceding_jokeid'], row['current_jokeid'])
 
     # Use spring layout to position nodes in 3D
@@ -119,12 +119,14 @@ def plot_top_joke_network(best_preceding_jokes):
     # Offset the labels slightly from the nodes for better visibility
     offset = 0.1  # Adjust this value to move labels further away from the nodes
     label_positions = node_positions + offset
-    
+
     # Use add_point_labels to add labels to nodes
     labels = list(G.nodes())
     plotter.add_point_labels(label_positions, labels, point_size=5, font_size=12, text_color="black", shape=None)
 
-    # Show the plot
+    plotter.set_background("skyblue")  # You can also use colors like "white", "black", or RGB values (1.0, 1.0, 1.0)
+    
+    # Show the plot interactively
     plotter.show()
 
 def main():
